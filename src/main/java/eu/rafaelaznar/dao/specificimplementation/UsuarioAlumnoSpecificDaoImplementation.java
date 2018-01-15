@@ -74,7 +74,7 @@ public class UsuarioAlumnoSpecificDaoImplementation extends TableGenericDaoImple
         PreparedStatement oPreparedStatement = null;
         ResultSet oResultSet = null;
         Integer iResult = 0;
-        Boolean insert = true;
+   
         try { // Retocar metodo set-update para insetar solo Nombre, Apellidos y email
                 strSQL = "UPDATE " + ob;
                 strSQL += " SET ";
@@ -89,21 +89,13 @@ public class UsuarioAlumnoSpecificDaoImplementation extends TableGenericDaoImple
                 Log4jHelper.errorLog(msg);
                 throw new Exception(msg);
             }
-            if (insert) {
-                oResultSet = oPreparedStatement.getGeneratedKeys();
-                oResultSet.next();
-                iResult = oResultSet.getInt(1);
-            }
+          
         } catch (Exception ex) {
             String msg = this.getClass().getName() + ":" + (ex.getStackTrace()[0]).getMethodName() + " ob:" + ob;
             Log4jHelper.errorLog(msg, ex);
             throw new Exception(msg, ex);
         } finally {
-            if (insert) {
-                if (oResultSet != null) {
-                    oResultSet.close();
-                }
-            }
+            
             if (oPreparedStatement != null) {
                 oPreparedStatement.close();
             }
