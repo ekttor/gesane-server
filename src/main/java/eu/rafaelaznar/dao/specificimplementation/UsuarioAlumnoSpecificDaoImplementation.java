@@ -56,6 +56,11 @@ public class UsuarioAlumnoSpecificDaoImplementation extends TableGenericDaoImple
 
     private Integer idCentrosanitario = 0;
     private Integer idUsuario = 0;
+    private String nombreUsuario = null;
+    private String primerApellidoUsuario = null;
+    private String segundoApellidoUsuario = null;
+    private String emailUsuario = null;
+    
 
     public UsuarioAlumnoSpecificDaoImplementation(Connection oPooledConnection, MetaBeanHelper oPuserBean_security, String strWhere) throws Exception {
         super("usuario", oPooledConnection, oPuserBean_security, strWhere);
@@ -63,7 +68,11 @@ public class UsuarioAlumnoSpecificDaoImplementation extends TableGenericDaoImple
         UsuarioSpecificBeanImplementation oUsuario = (UsuarioSpecificBeanImplementation) oPuserBean_security.getBean();
         idUsuario = oUsuario.getId();
         idCentrosanitario = oUsuario.getId_centrosanitario();
-
+        nombreUsuario = oUsuario.getNombre();
+        primerApellidoUsuario = oUsuario.getPrimer_apellido();
+        segundoApellidoUsuario = oUsuario.getSegundo_apellido();
+        emailUsuario = oUsuario.getEmail();
+        
         //MetaBeanHelper oMetaBeanHelper = oUsuario.getObj_tipousuario();
         //CentrosanitarioSpecificBeanImplementation oCentrosanitario = (CentrosanitarioSpecificBeanImplementation) oMetaBeanHelper.getBean();
         strSQL = "SELECT * FROM usuario u WHERE u.id_centrosanitario = " + idCentrosanitario;
@@ -76,10 +85,10 @@ public class UsuarioAlumnoSpecificDaoImplementation extends TableGenericDaoImple
         Integer iResult = 0;
    
         try { // Retocar metodo set-update para insetar solo Nombre, Apellidos y email
-                strSQL = "UPDATE " + ob;
+                strSQL = "UPDATE " + ob ;
                 strSQL += " SET ";
                 strSQL += oBean.toPairs();
-                strSQL += " WHERE id=? ";
+                strSQL += " WHERE u.id = " + idUsuario;
                 oPreparedStatement = oConnection.prepareStatement(strSQL, Statement.RETURN_GENERATED_KEYS);
                 oPreparedStatement.setInt(1, oBean.getId());
                 iResult = oPreparedStatement.executeUpdate();
